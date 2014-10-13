@@ -1,4 +1,10 @@
 {
-	name: "control-junkie",
-	description: "A web client for the UpdateJunkie pilferware"
+  "name": "control-junkie",
+  "description": "A web client for the UpdateJunkie pilferware",
+  "dependencies": {
+    "polymer": "~0.4.2",
+    "paper-elements": "polymer/paper-elements#~0.4.2",
+    "font-roboto": "polymer/font-roboto#~0.4.2",
+    "core-ajax": "polymer/core-ajax#~0.4.2"
+  }
 }
