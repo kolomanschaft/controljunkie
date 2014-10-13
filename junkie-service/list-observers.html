@@ -1,0 +1,45 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+
+<polymer-element name="list-observers" attributes="observers">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+
+    <core-ajax id="list_observers"
+      auto
+      url="http://localhost:8118/api/list/observers"
+      method="GET"
+      on-core-response="{{observerListLoaded}}"
+      handleAs="json">
+    </core-ajax>
+
+  </template>
+  <script>
+  Polymer('junkie-service', {
+    
+    created: function() {
+      this.observers = [];
+    },
+
+    attached: function() {
+      this.$.list_observers.go();
+    },
+
+    observerListLoaded: function() {
+      response = this.$.list_observers.response;
+      console.log("list-observers: " + response);
+
+      this.observers = response["response"];
+      this.fire('list-loaded');
+    },
+
+    observerLoaded: function() {
+    }
+
+  });
+  </script>
+</polymer-element>

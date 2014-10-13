@@ -1,0 +1,43 @@
+﻿<link rel="import" href="components/polymer/polymer.html">
+<!-- <link rel="import" href="junkie-service/list-observers.html"> -->
+<link rel="import" href="observer-card.html">
+
+<polymer-element name="observer-list">
+  <template>
+    <style>
+    :host {
+      display: block;
+      width: 100%;
+    }
+    observer-card {
+      margin-bottom: 30px;
+    }
+    </style>
+<!-- 
+    <list-observers observers="{{observers}}">
+    </junkie-service>  -->
+
+    <div layout vertical center>
+      <template repeat="{{observer in observers}}">
+
+<!--         <observer-card 
+        favorite="true" 
+        on-favorite-tap="{{handleFavorite}}"
+        name="observer.name">
+        </observer-card> -->
+
+      </template>
+    </div>
+    
+  </template>
+
+  <script>
+  Polymer({
+
+    handleFavorite: function(event, detail, sender) {
+    }
+
+  });
+  </script>
+
+</polymer-element>
