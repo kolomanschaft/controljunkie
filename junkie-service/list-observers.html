@@ -9,7 +9,6 @@
     }
     </style>
     <core-ajax id="ajax"
-      auto
       url="http://localhost:8118/api/list/observers"
       on-core-response="{{observersLoaded}}"
       handleAs="json">
@@ -22,6 +21,9 @@
     },
     observersLoaded: function() {
       this.observers = this.$.ajax.response['observers'].slice(0);
+    },
+    go: function() {
+      this.$.ajax.go();
     }
   });
   </script>

@@ -1,0 +1,37 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+
+<polymer-element name="observer-state" attributes="observer state">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+    <core-ajax id="ajax"
+      url="http://localhost:8118/api/observer/{{observer}}/state"
+      on-core-response="{{observerState}}"
+      handleAs="json"
+      method="GET">
+    </core-ajax>
+  </template>
+  <script>
+  Polymer('observer-state', {
+    created: function() {
+      this.state = "";
+      this.observer = "";
+    },
+    observerState: function() {
+      this.state = this.$.ajax.response['state'];
+    },
+    observerChanged: function() {
+      if (this.observer != "") {
+        this.go();
+      }
+    },
+    go: function() {
+      this.$.ajax.go()
+    }
+  });
+  </script>
+</polymer-element>

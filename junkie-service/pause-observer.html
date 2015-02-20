@@ -1,0 +1,29 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+
+<polymer-element name="pause-observer" attributes="observer">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+    <core-ajax id="ajax"
+      url="http://localhost:8118/api/observer/{{observer}}/pause"
+      on-core-response="{{observerPaused}}"
+      method="PUT">
+    </core-ajax>
+  </template>
+  <script>
+  Polymer('pause-observer', {
+    observerPaused: function() {
+      if (event.currentTarget.activeRequest.status == 200) {
+        this.fire('request-ok');
+      }
+    },
+    go: function() {
+      this.$.ajax.go();
+    }
+  });
+  </script>
+</polymer-element>
