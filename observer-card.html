@@ -1,7 +1,9 @@
 <link rel="import" href="components/polymer/polymer.html">
 <link rel="import" href="components/core-icon-button/core-icon-button.html">
+<link rel="import" href="components/core-icons/av-icons.html">
+<link rel="import" href="components/core-icons/core-icons.html">
 
-<polymer-element name="observer-card">
+<polymer-element name="observer-card" attributes="state name">
   <template>
     <style>
     :host {
@@ -14,19 +16,24 @@
       font-weight: 300;
       border-radius: 15px;
     }
-    polyfill-next-selector { content: '.card-header h2'; }
-    .card-header ::content h2 {
+    .card-header h2 {
       margin: 0;
       font-size: 1.8rem;
       font-weight: 300;
     }
-    polyfill-next-selector { content: '.card-header img'; }
-    .card-header ::content img {
-      width: 50px;
-      border-radius: 50%;
-      margin: 10px;
+    #stateicon {
+      width: 70px;
+      height: 70px;
+      margin-left: 5px;
+      margin-right: 10px;
+      padding: 0 1px 1px 1px;
     }
-    core-icon-button {
+    #stateicon::shadow core-icon{ 
+    height: 70px;
+    width: 70px;
+    fill: rgb(245,188,0);
+    }
+    #settingsicon {
       position: absolute;
       top: 3px;
       right: 3px;
@@ -35,21 +42,36 @@
     </style>
 
     <div class="card-header" layout horizontal center>
-
-      <content select="img"></content>
-      <content select="h2"></content>
-
+      <core-icon-button id="stateicon" icon="" alt="STOP" on-tap="{{stateTapped}}">
+      </core-icon-button>
+      <h2>{{name}}</h2>
     </div>
 
-    <core-icon-button id="settings-icon" icon="settings" on-tap="{{settingsTapped}}">
+    <p>State: {{state == 'RUNNING' ? 'Running' : 'Paused'}}</p>
+
+    <core-icon-button id="settingsicon" icon="settings" on-tap="{{settingsTapped}}">
     </core-icon-button>
 
     <content></content>   
   </template>
   <script>
-  Polymer({
+  Polymer('observer-card', {
     settingsTapped: function(event, detail, sender) {
       this.fire('settings-tap');
+    },
+    stateTapped: function(event, detail, sender) {
+      this.fire('toggle-state')
+    },
+    stateChanged: function() {
+      if (this.state == "RUNNING") {
+        this.$.stateicon.icon = "av:play-circle-fill";
+      }
+      else if (this.state == "PAUSED") {
+        this.$.stateicon.icon = "av:pause-circle-fill";
+      }
+      else {
+        this.$.stateicon.icon = "error"; 
+      }
     }
   });
   </script>

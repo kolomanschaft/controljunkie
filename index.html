@@ -63,7 +63,7 @@
 
     <core-toolbar>
 
-      <paper-tabs id="tabs" selected="observers" self-end>
+      <paper-tabs id="tabs" selected="observers" on-core-select="{{tabSelected}}" self-end>
         <paper-tab name="observers">Observers</paper-tab>
         <paper-tab name="settings">Settings</paper-tab>
       </paper-tabs>
