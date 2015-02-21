@@ -3,6 +3,7 @@
 <link rel="import" href="components/core-icon-button/core-icon-button.html">
 <link rel="import" href="components/core-icons/av-icons.html">
 <link rel="import" href="components/core-icons/core-icons.html">
+<link rel="import" href="observer-details.html">
 
 <polymer-element name="observer-card" attributes="state name">
   <template>
@@ -27,9 +28,6 @@
       font-size: 1.8rem;
       font-weight: 300;
     }
-    .detail-input {
-      width: 90%;
-    }
     #stateicon {
       width: 70px;
       height: 70px;
@@ -53,11 +51,6 @@
       width: 100%;
       margin: 0;
     }
-    #details {
-      padding-left: 30px;
-      height: 0px;
-      transition: 0.3s ease-in-out;
-    }
     </style>
 
     <div class="card-header" layout horizontal center>
@@ -66,9 +59,7 @@
       <h2>{{name}}</h2>
     </div>
 
-    <div id="details">
-      URL: <input name="url" class="detail-input">
-    </div>
+    <observer-details id="details"></observer-details>
 
     <paper-button id="show-details-button" on-tap="{{toggleDetails}}">Show Details</paper-button>
 
@@ -93,11 +84,11 @@
     },
     toggleDetails: function(event, detail, sender) {
       var details = this.$.details;
-      if (details.style.height == "100px") {
-        details.style.height = "0px";
+      if (details.visible == true) {
+        details.hide();
       }
       else {
-        details.style.height = "100px";
+        details.show();
       }
     }
   });

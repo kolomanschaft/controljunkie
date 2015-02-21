@@ -1,0 +1,39 @@
+<link rel="import" href="components/polymer/polymer.html">
+
+<polymer-element name="observer-details" attributes="visible">
+  <template>
+    <style>
+    .detail-input {
+      width: 90%;
+    }
+    #details {
+      padding-left: 30px;
+      height: 0px;
+      transition: 0.3s ease-in-out;
+    }
+    </style>
+
+    <div id="details">
+      URL: <input name="url" class="detail-input">
+    </div>
+
+    <content></content>
+  </template>
+  <script>
+  Polymer('observer-details', {
+  ready: function () {
+    this.visible = false;
+  },
+  show: function() {
+    var details = this.$.details;
+    details.style.height = "100px";
+    this.visible = true;
+  },
+  hide: function() {
+    var details = this.$.details;
+    details.style.height = "0px";
+    this.visible = false;
+  }
+  });
+  </script>
+</polymer-element>
