@@ -1,7 +1,7 @@
 <link rel="import" href="../components/polymer/polymer.html">
 <link rel="import" href="../components/core-ajax/core-ajax.html">
 
-<polymer-element name="list-observers" attributes="observers">
+<polymer-element name="get-observer" attributes="name data">
   <template>
     <style>
     :host {
@@ -9,18 +9,16 @@
     }
     </style>
     <core-ajax id="ajax"
-      url="http://localhost:8118/api/list/observers"
-      on-core-response="{{observersLoaded}}"
+      url="http://localhost:8118/api/observer/{{name}}"
+      method="GET"
+      on-core-response="{{observerLoaded}}"
       handleAs="json">
     </core-ajax>
   </template>
   <script>
-  Polymer('list-observers', {
-    created: function() {
-      this.observers = [];
-    },
-    observersLoaded: function() {
-      this.observers = this.$.ajax.response['observers'].slice(0);
+  Polymer('get-observer', {
+    observerLoaded: function() {
+      this.data = this.$.ajax.response;
     },
     go: function() {
       this.$.ajax.go();

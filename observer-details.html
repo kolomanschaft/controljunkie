@@ -1,6 +1,7 @@
 <link rel="import" href="components/polymer/polymer.html">
+<link rel="import" href="junkie-service/get-observer.html">
 
-<polymer-element name="observer-details" attributes="visible">
+<polymer-element name="observer-details" attributes="visible observer">
   <template>
     <style>
     .detail-input {
@@ -13,8 +14,11 @@
     }
     </style>
 
+    <get-observer name="{{observer}}" data="{{data}}"></get-observer>
+
     <div id="details">
-      URL: <input name="url" class="detail-input">
+      <b>URL:</b> {{data["url"]}} <br />
+      <b>Profile:</b> {{data["profile"]}} <br />
     </div>
 
     <content></content>
@@ -23,11 +27,14 @@
   Polymer('observer-details', {
   ready: function () {
     this.visible = false;
+    this.data = null;
   },
   show: function() {
     var details = this.$.details;
+    var get_observer = this.shadowRoot.querySelector('get-observer');
     details.style.height = "100px";
     this.visible = true;
+    get_observer.go();
   },
   hide: function() {
     var details = this.$.details;

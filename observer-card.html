@@ -46,8 +46,8 @@
       right: 3px;
       color: #636363;
     }
-    #show-details-button {
-      background-color: #D0D0D0;
+    #show_details_button {
+      background-color: #D5D5D5;
       width: 100%;
       margin: 0;
     }
@@ -59,9 +59,9 @@
       <h2>{{name}}</h2>
     </div>
 
-    <observer-details id="details"></observer-details>
+    <observer-details id="details" observer="{{name}}"></observer-details>
 
-    <paper-button id="show-details-button" on-tap="{{toggleDetails}}">Show Details</paper-button>
+    <paper-button id="show_details_button" on-tap="{{toggleDetails}}">Show Details</paper-button>
 
     <content></content>
   </template>
@@ -84,11 +84,14 @@
     },
     toggleDetails: function(event, detail, sender) {
       var details = this.$.details;
+      var button = this.$.show_details_button;
       if (details.visible == true) {
         details.hide();
+        button.textContent = "Show details";
       }
       else {
         details.show();
+        button.textContent = "Hide details";
       }
     }
   });

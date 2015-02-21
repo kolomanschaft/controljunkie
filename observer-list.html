@@ -17,7 +17,7 @@
     }
     </style>
 
-    <get-observers id="get_observer" observers="{{observers}}"></get-observers>
+    <list-observers id="list_observers" observers="{{observers}}"></list-observers>
     
     <div layout vertical center>
       <template repeat="{{observer, num in observers}}">
@@ -37,7 +37,7 @@
   <script>
   Polymer('observer-list', {
     attached: function() {
-      this.$.get_observer.go();
+      this.$.list_observers.go();
     },
     handleSettings: function(event, detail, sender) {
       var observer = sender.templateInstance.model.observer;
