@@ -1,7 +1,10 @@
 <link rel="import" href="components/polymer/polymer.html">
 <link rel="import" href="components/paper-button/paper-button.html">
+<link rel="import" href="components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="components/paper-toast/paper-toast.html">
 <link rel="import" href="components/core-icon-button/core-icon-button.html">
 <link rel="import" href="components/core-icons/av-icons.html">
+<link rel="import" href="components/core-icons/editor-icons.html">
 <link rel="import" href="components/core-icons/core-icons.html">
 
 <link rel="import" href="junkie-service/pause-observer.html">
@@ -32,14 +35,20 @@
       font-size: 1.4rem;
       font-weight: 300;
     }
-    #stateicon {
+    #edit_button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      color: #808080;
+    }
+    #state_button {
       width: 50px;
       height: 50px;
       margin-left: 0px;
       margin-right: 10px;
-      padding: 0 1px 1px 1px;
+      padding: 0;
     }
-    #stateicon::shadow core-icon {
+    #state_button::shadow core-icon {
     height: 50px;
     width: 50px;
     fill: rgb(245,188,0);
@@ -61,15 +70,20 @@
     <pause-observer id="pause_observer" observer="{{observer}}" on-request-ok="{{updateState}}"></pause-observer>
     <resume-observer id="resume_observer" observer="{{observer}}" on-request-ok="{{updateState}}"></resume-observer>
 
+    <paper-icon-button id="edit_button" icon="editor:mode-edit"></paper-icon-button>
+
     <div class="card-header" layout horizontal center>
-      <core-icon-button id="stateicon" icon="" on-tap="{{stateTapped}}">
-      </core-icon-button>
+      <paper-icon-button id="state_button" icon="" on-tap="{{stateTapped}}">
+      </paper-icon-button>
       <h2>{{observer}}</h2>
     </div>
 
-    <observer-details id="details" observer="{{observer}}"></observer-details>
+    <observer-details id="details" observer="{{observer}}" state="{{state}}"></observer-details>
 
     <paper-button id="show_details_button" on-tap="{{toggleDetails}}">Show Details</paper-button>
+
+    <paper-toast id="paused_toast" text="Observer '{{observer}}' paused"></paper-toast>
+    <paper-toast id="resumed_toast" text="Observer '{{observer}}' resumed"></paper-toast>
 
     <content></content>
   </template>
@@ -78,9 +92,11 @@
 
     ready: function() {
       this.state = "";
+      this.toasting = false;
     },
 
     stateTapped: function(event, detail, sender) {
+      this.toasting = true;
       if (this.state == 'RUNNING') {
         var pause_observer = this.shadowRoot.querySelector('#pause_observer');
         pause_observer.go();
@@ -92,14 +108,29 @@
     },
 
     stateChanged: function() {
+      var button = this.$.state_button;
       if (this.state == "RUNNING") {
-        this.$.stateicon.icon = "av:play-circle-fill";
+        button.icon = "av:play-circle-fill";
+        this.showToast();
       }
       else if (this.state == "PAUSED") {
-        this.$.stateicon.icon = "av:pause-circle-fill";
+        button.icon = "av:pause-circle-fill";
+        this.showToast();
       }
       else {
-        this.$.stateicon.icon = "error";
+        this.$.state_button.icon = "error";
+      }
+    },
+
+    showToast: function() {
+      if (this.toasting) {
+        if (this.state == "RUNNING") {
+          this.$.resumed_toast.show();
+        }
+        else if (this.state == "PAUSED") {
+          this.$.paused_toast.show();
+        }
+        this.toasting = false;
       }
     },
 

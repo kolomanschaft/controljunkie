@@ -1,7 +1,7 @@
 <link rel="import" href="components/polymer/polymer.html">
 <link rel="import" href="junkie-service/get-observer.html">
 
-<polymer-element name="observer-details" attributes="visible observer">
+<polymer-element name="observer-details" attributes="visible observer state">
   <template>
     <style>
     #details {
@@ -22,6 +22,7 @@
 
     <div id="details">
       <ul>
+          <li><b>State:</b> {{state}}</li>
           <li><b>URL:</b> <a target="_blank" href="{{data['url']}}">Link</a></li>
           <li><b>Profile:</b> {{data["profile"]}}</li>
           <li><b>Interval:</b> {{data["interval"]}} seconds</li>
@@ -33,22 +34,26 @@
   </template>
   <script>
   Polymer('observer-details', {
+
   ready: function () {
     this.visible = false;
     this.data = null;
   },
+
   show: function() {
     var details = this.$.details;
     var get_observer = this.shadowRoot.querySelector('get-observer');
-    details.style.height = "100px";
+    details.style.height = "120px";
     this.visible = true;
     get_observer.go();
   },
+
   hide: function() {
     var details = this.$.details;
     details.style.height = "0px";
     this.visible = false;
   }
+
   });
   </script>
 </polymer-element>
