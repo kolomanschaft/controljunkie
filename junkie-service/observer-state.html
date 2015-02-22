@@ -9,7 +9,7 @@
     }
     </style>
     <core-ajax id="ajax"
-      url="http://localhost:8118/api/observer/{{observer}}/state"
+      url="{{base_url + 'api/observer/' + observer + '/state'}}"
       on-core-response="{{observerState}}"
       handleAs="json"
       method="GET">
@@ -19,8 +19,7 @@
   Polymer('observer-state', {
 
     created: function() {
-      this.state = "";
-      this.observer = "";
+      this.base_url = document.URL; // Only same source at the moment
     },
 
     observerState: function() {

@@ -9,21 +9,28 @@
     }
     </style>
     <core-ajax id="ajax"
-      url="http://localhost:8118/api/observer/{{observer}}/resume"
+      url="{{base_url + 'api/observer/' + observer + '/resume'}}"
       on-core-response="{{observerResumed}}"
       method="PUT">
     </core-ajax>
   </template>
   <script>
   Polymer('resume-observer', {
+
+    created: function() {
+      this.base_url = document.URL; // Only same source at the moment
+    },
+
     observerResumed: function() {
       if (event.currentTarget.activeRequest.status == 200) {
         this.fire('request-ok');
       }
     },
+
     go: function() {
       this.$.ajax.go();
     }
+
   });
   </script>
 </polymer-element>
