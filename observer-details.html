@@ -9,16 +9,29 @@
     }
     #details {
       padding-left: 30px;
+      padding-right: 30px;
       height: 0px;
       transition: 0.3s ease-in-out;
+      word-wrap: break-word;
+    }
+    #details ul {
+      list-style-type: none;
+    }
+    a {
+      text-decoration: none;
+      color: #808080;
     }
     </style>
 
     <get-observer name="{{observer}}" data="{{data}}"></get-observer>
 
     <div id="details">
-      <b>URL:</b> {{data["url"]}} <br />
-      <b>Profile:</b> {{data["profile"]}} <br />
+      <ul>
+          <li><b>URL:</b> <a target="_blank" href="{{data['url']}}">{{data["url"]}}</a></li>
+          <li><b>Profile:</b> {{data["profile"]}}</li>
+          <li><b>Interval:</b> {{data["interval"]}} seconds</li>
+          <li><b>Criteria:</b> {{data["criteria"].length}}</li>
+      </ul>
     </div>
 
     <content></content>
@@ -32,7 +45,7 @@
   show: function() {
     var details = this.$.details;
     var get_observer = this.shadowRoot.querySelector('get-observer');
-    details.style.height = "100px";
+    details.style.height = "200px";
     this.visible = true;
     get_observer.go();
   },

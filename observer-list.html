@@ -1,8 +1,5 @@
 <link rel="import" href="components/polymer/polymer.html">
 <link rel="import" href="junkie-service/list-observers.html">
-<link rel="import" href="junkie-service/pause-observer.html">
-<link rel="import" href="junkie-service/resume-observer.html">
-<link rel="import" href="junkie-service/observer-state.html">
 <link rel="import" href="observer-card.html">
 
 <polymer-element name="observer-list" attributes="show">
@@ -20,16 +17,8 @@
     <list-observers id="list_observers" observers="{{observers}}"></list-observers>
     
     <div layout vertical center>
-      <template repeat="{{observer, num in observers}}">
-        <observer-state id="observer_state_{{num}}" observer="{{observer.name}}" state="{{observer.state}}"></observer-state>
-        <pause-observer id="pause_observer_{{num}}" on-request-ok="{{updateState}}"></pause-observer>
-        <resume-observer id="resume_observer_{{num}}" on-request-ok="{{updateState}}"></resume-observer>
-        <observer-card 
-          on-settings-tap="{{handleSettings}}"
-          on-toggle-state="{{toggleState}}"
-          state="{{observer.state}}"
-          name="{{observer.name}}">
-        </observer-card>
+      <template repeat="{{observer in observers}}">
+        <observer-card observer="{{observer.name}}"></observer-card>
       </template>
     </div>
   </template>
@@ -39,28 +28,6 @@
     attached: function() {
       this.$.list_observers.go();
     },
-    handleSettings: function(event, detail, sender) {
-      var observer = sender.templateInstance.model.observer;
-    },
-    toggleState: function(event, detail, sender) {
-      var observer = sender.templateInstance.model.observer;
-      var num = sender.templateInstance.model.num;
-      if (observer.state == 'RUNNING') {
-        var pause_observer = this.shadowRoot.querySelector('#pause_observer_' + num);
-        pause_observer.observer = observer.name;
-        pause_observer.go();
-      }
-      else if (observer.state == 'PAUSED') {
-        var resume_observer = this.shadowRoot.querySelector('#resume_observer_' + num);
-        resume_observer.observer = observer.name;
-        resume_observer.go();
-      }
-    },
-    updateState: function(event, detail, sender) {
-      var num = sender.templateInstance.model.num;
-      var observer_state = this.shadowRoot.querySelector('#observer_state_' + num);
-      observer_state.go();
-    }
   });
   </script>
 </polymer-element>

@@ -3,9 +3,13 @@
 <link rel="import" href="components/core-icon-button/core-icon-button.html">
 <link rel="import" href="components/core-icons/av-icons.html">
 <link rel="import" href="components/core-icons/core-icons.html">
+
+<link rel="import" href="junkie-service/pause-observer.html">
+<link rel="import" href="junkie-service/resume-observer.html">
+<link rel="import" href="junkie-service/observer-state.html">
 <link rel="import" href="observer-details.html">
 
-<polymer-element name="observer-card" attributes="state name">
+<polymer-element name="observer-card" attributes="observer">
   <template>
     <style>
     :host {
@@ -53,13 +57,17 @@
     }
     </style>
 
+    <observer-state id="observer_state" observer="{{observer}}" state="{{state}}"></observer-state>
+    <pause-observer id="pause_observer" observer="{{observer}}" on-request-ok="{{updateState}}"></pause-observer>
+    <resume-observer id="resume_observer" observer="{{observer}}" on-request-ok="{{updateState}}"></resume-observer>
+
     <div class="card-header" layout horizontal center>
-      <core-icon-button id="stateicon" icon="" alt="STOP" on-tap="{{stateTapped}}">
+      <core-icon-button id="stateicon" icon="" on-tap="{{stateTapped}}">
       </core-icon-button>
-      <h2>{{name}}</h2>
+      <h2>{{observer}}</h2>
     </div>
 
-    <observer-details id="details" observer="{{name}}"></observer-details>
+    <observer-details id="details" observer="{{observer}}"></observer-details>
 
     <paper-button id="show_details_button" on-tap="{{toggleDetails}}">Show Details</paper-button>
 
@@ -67,10 +75,22 @@
   </template>
   <script>
   Polymer('observer-card', {
-    stateTapped: function(event, detail, sender) {
-      event.stopPropagation();
-      this.fire('toggle-state')
+
+    ready: function() {
+      this.state = "";
     },
+
+    stateTapped: function(event, detail, sender) {
+      if (this.state == 'RUNNING') {
+        var pause_observer = this.shadowRoot.querySelector('#pause_observer');
+        pause_observer.go();
+      }
+      else if (this.state == 'PAUSED') {
+        var resume_observer = this.shadowRoot.querySelector('#resume_observer');
+        resume_observer.go();
+      }
+    },
+
     stateChanged: function() {
       if (this.state == "RUNNING") {
         this.$.stateicon.icon = "av:play-circle-fill";
@@ -79,9 +99,15 @@
         this.$.stateicon.icon = "av:pause-circle-fill";
       }
       else {
-        this.$.stateicon.icon = "error"; 
+        this.$.stateicon.icon = "error";
       }
     },
+
+    updateState: function(event, detail, sender) {
+      var observer_state = this.shadowRoot.querySelector('#observer_state');
+      observer_state.go();
+    },
+
     toggleDetails: function(event, detail, sender) {
       var details = this.$.details;
       var button = this.$.show_details_button;
@@ -94,6 +120,7 @@
         button.textContent = "Hide details";
       }
     }
+
   });
   </script>
 </polymer-element>

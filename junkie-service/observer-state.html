@@ -17,21 +17,26 @@
   </template>
   <script>
   Polymer('observer-state', {
+
     created: function() {
       this.state = "";
       this.observer = "";
     },
+
     observerState: function() {
       this.state = this.$.ajax.response['state'];
     },
+
     observerChanged: function() {
       if (this.observer != "") {
         this.go();
       }
     },
+
     go: function() {
       this.$.ajax.go()
     }
+
   });
   </script>
 </polymer-element>
