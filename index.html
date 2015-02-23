@@ -11,78 +11,88 @@
   </script>
 
   <link rel="import" href="components/font-roboto/roboto.html">
+  <link rel="import" href="components/core-animated-pages/core-animated-pages.html">
+  <link rel="import" href="components/core-animated-pages/transitions/slide-from-right.html">
   <link rel="import" href="components/core-header-panel/core-header-panel.html">
+  <link rel="import" href="components/core-icon/core-icon.html">
+  <link rel="import" href="components/core-menu/core-menu.html">
+  <link rel="import" href="components/core-scaffold/core-scaffold.html">
   <link rel="import" href="components/core-toolbar/core-toolbar.html">
   <link rel="import" href="components/paper-tabs/paper-tabs.html">
-  <link rel="import" href="observer-list.html">
+  <link rel="import" href="components/paper-item/paper-item.html">
+  <link rel="import" href="observer-list/observer-list.html">
 
   <style>
-  html,body {
-    height: 100%;
-    margin: 0;
-    background-color: #E5E5E5;
-    font-family: 'RobotoDraft', sans-serif;
+  body {
+    font-family: "RobotoDraft";
+    font-weight: 300;
   }
-  core-header-panel {
-    height: 100%;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch; 
-  }
-  core-toolbar {
-    background: #03a9f4;
-    color: white;
-  }
-  #tabs {
-    width: 100%;
-    margin: 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-	text-transform: uppercase;
+  body /deep/ core-toolbar {
+    background-color: #03a9f4;
+    color: #fff;
   }
   .container {
     width: 80%;
     margin: 50px auto;
   }
   @media (min-width: 481px) {
-    #tabs {
-      width: 200px;
-    }
     .container {
       width: 300px;
     }
+  }
+  paper-item a {
+    text-decoration: none;
+    color: currentcolor;
+  }
+  core-menu {
+    margin:0;
+  }
+  .menu-icon {
+    margin-right: 10px;
   }
   </style>
 
 </head>
 
-<body unresolved>
+<body unresolved fullbleed>
 
-  <core-header-panel>
-
-    <core-toolbar>
-
-      <paper-tabs id="tabs" selected="observers" on-core-select="{{tabSelected}}" self-end>
-        <paper-tab name="observers">Observers</paper-tab>
-        <paper-tab name="settings">Settings</paper-tab>
-      </paper-tabs>
-
-    </core-toolbar>
-
-    <div class="container" layout vertical center>
-      <observer-list show="observers"></observer-list>
-    </div>
-
-  </core-header-panel>
+  <template is="auto-binding">
+      <core-scaffold>
+          <nav>
+              <core-toolbar>
+                  <span>ControlJunkie</span>
+              </core-toolbar>
+              <core-menu selected="{{route}}">
+                  <template repeat="{{menuitem in menu}}">
+                      <paper-item>
+                          <core-icon class="menu-icon" icon="{{menuitem['icon']}}"></core-icon>
+                          <a href="#{{menuitem['hash']}}">{{menuitem['name']}}</a>
+                      </paper-item>
+                  </template>
+              </core-menu>
+          </nav>
+          <core-toolbar tool flex>Observers</core-toolbar>
+            <core-animated-pages selected="{{route}}" transitions="slide-from-right">
+                <section id="observer_page" layout vertical center>
+                    <div class="container">
+                        <observer-list></observer-list>
+                    </div>
+                </section>
+                <section id="settings_page" layout vertical center>
+                    <div class="container">
+                        Here be dragons!
+                    </div>
+                </section>
+            </core-animated-pages>
+      </core-scaffold>
+  </template>
 
   <script>
-  var tabs = document.querySelector('paper-tabs');
-  var list = document.querySelector('observer-list');
-
-  tabs.addEventListener('core-select', function() {
-    list.show = tabs.selected;
-  });
+  var template = document.querySelector('template[is="auto-binding"]');
+  template.menu = [
+    {name: "Observers", icon: "visibility", hash: "observers"},
+    {name: "Settings", icon: "settings", hash: "settings"}
+  ]
   </script>
 </body>
 
