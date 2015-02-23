@@ -9,7 +9,7 @@
     }
     </style>
     <core-ajax id="ajax"
-      url="{{base_url + 'api/list/observers'}}"
+      url="{{base_url + '/api/list/observers'}}"
       on-core-response="{{observersLoaded}}"
       handleAs="json">
     </core-ajax>
@@ -18,7 +18,7 @@
   Polymer('list-observers', {
     created: function() {
       this.observers = [];
-      this.base_url = document.URL; // Only same source at the moment
+      this.base_url = location.origin; // Only same source at the moment
     },
     observersLoaded: function() {
       this.observers = this.$.ajax.response['observers'].slice(0);

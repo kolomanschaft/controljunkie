@@ -9,7 +9,7 @@
     }
     </style>
     <core-ajax id="ajax"
-      url="{{base_url + 'api/observer/' + observer + '/pause'}}"
+      url="{{base_url + '/api/observer/' + observer + '/pause'}}"
       on-core-response="{{observerPaused}}"
       method="PUT">
     </core-ajax>
@@ -18,7 +18,7 @@
   Polymer('pause-observer', {
 
     created: function() {
-      this.base_url = document.URL; // Only same source at the moment
+      this.base_url = location.origin; // Only same source at the moment
     },
 
     observerPaused: function() {

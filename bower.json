@@ -7,6 +7,7 @@
     "font-roboto": "polymer/font-roboto#~0.5.5",
     "core-ajax": "polymer/core-ajax#~0.5.5",
     "core-scaffold": "Polymer/core-scaffold#~0.5.5",
-    "core-animated-pages": "Polymer/core-animated-pages#~0.5.5"
+    "core-animated-pages": "Polymer/core-animated-pages#~0.5.5",
+    "flatiron-director": "Polymer/flatiron-director#~0.5.0"
   }
 }

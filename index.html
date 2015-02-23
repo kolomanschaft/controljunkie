@@ -10,6 +10,7 @@
   <script src="components/webcomponentsjs/webcomponents.js">
   </script>
 
+  <link rel="import" href="components/flatiron-director/flatiron-director.html">
   <link rel="import" href="components/font-roboto/roboto.html">
   <link rel="import" href="components/core-animated-pages/core-animated-pages.html">
   <link rel="import" href="components/core-animated-pages/transitions/slide-from-right.html">
@@ -57,33 +58,43 @@
 <body unresolved fullbleed>
 
   <template is="auto-binding">
-      <core-scaffold>
+
+      <flatiron-director route="{{route}}" autoHash></flatiron-director>
+
+      <core-scaffold id="scaffold">
+
           <nav>
+
               <core-toolbar>
                   <span>ControlJunkie</span>
               </core-toolbar>
-              <core-menu selected="{{route}}">
+
+              <core-menu valueattr="hash" selected="{{route}}" on-core-select="{{menuItemSelected}}">
                   <template repeat="{{menuitem in menu}}">
-                      <paper-item>
-                          <core-icon class="menu-icon" icon="{{menuitem['icon']}}"></core-icon>
-                          <a href="#{{menuitem['hash']}}">{{menuitem['name']}}</a>
+                      <paper-item hash="{{menuitem.hash}}">
+                          <core-icon class="menu-icon" icon="{{menuitem.icon}}"></core-icon>
+                          <a href="#{{menuitem.hash}}">{{menuitem.name}}</a>
                       </paper-item>
                   </template>
               </core-menu>
+
           </nav>
+
           <core-toolbar tool flex>Observers</core-toolbar>
-            <core-animated-pages selected="{{route}}" transitions="slide-from-right">
-                <section id="observer_page" layout vertical center>
+
+            <core-animated-pages selected="{{route}}" valueattr="hash" transitions="slide-from-right">
+                <section hash="observers" layout vertical center>
                     <div class="container">
                         <observer-list></observer-list>
                     </div>
                 </section>
-                <section id="settings_page" layout vertical center>
+                <section hash="settings" layout vertical center>
                     <div class="container">
                         Here be dragons!
                     </div>
                 </section>
             </core-animated-pages>
+
       </core-scaffold>
   </template>
 
@@ -93,6 +104,15 @@
     {name: "Observers", icon: "visibility", hash: "observers"},
     {name: "Settings", icon: "settings", hash: "settings"}
   ]
+  template.addEventListener('template-bound', function(e) {
+    this.route = this.route || DEFAULT_ROUTE;
+  });
+  template.menuItemSelected = function(e, detail, sender) {
+    if (detail.isSelected) {
+      var scaffold = document.querySelector('core-scaffold');
+      scaffold.closeDrawer();
+    }
+  };
   </script>
 </body>
 
