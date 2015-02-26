@@ -1,0 +1,56 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+
+<polymer-element name="smtp-settings" attributes="settings">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+
+    <core-ajax id="ajax_get"
+      url="{{base_url + '/api/settings/smtp'}}"
+      method="GET"
+      on-core-response="{{settingsLoaded}}"
+      handleAs="json">
+    </core-ajax>
+
+    <core-ajax id="ajax_put"
+      url="{{base_url + '/api/settings/smtp'}}"
+      method="PUT"
+      on-core-response="{{settingsPut}}"
+      contentType="application/json">
+    </core-ajax>
+
+  </template>
+  <script>
+  Polymer('smtp-settings', {
+
+    created: function() {
+      this.base_url = location.origin; // Only same source at the moment
+    },
+
+    settingsLoaded: function(event, detail, sender) {
+      this.settings = this.$.ajax_get.response;
+    },
+
+    settingsPut: function(event, detail, sender) {
+      if (event.currentTarget.activeRequest.status == 200) {
+        this.fire('put-request-ok');
+      }
+    },
+
+    get: function() {
+      this.$.ajax_get.go();
+    },
+
+    put: function() {
+      this.$.ajax_put.body = JSON.stringify(this.settings);
+      console.log(this.$.ajax_put.body);
+      this.$.ajax_put.go();
+    }
+
+  });
+  </script>
+</polymer-element>

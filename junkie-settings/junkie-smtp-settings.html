@@ -1,0 +1,66 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/paper-input/paper-input.html">
+<link rel="import" href="../components/paper-toggle-button/paper-toggle-button.html">
+
+<link rel="import" href="../junkie-service/smtp-settings.html">
+
+<polymer-element name="junkie-smtp-settings" attributes="observer">
+  <template>
+    <style>
+    :host {
+    }
+    .header {
+      font-size: 18px;
+      font-weight: 400;
+    }
+    .settings-input {
+      width: 100%;
+    }
+    .toggle-input {
+      margin-top: 30px;
+      martin-bottom: 0;
+    }
+    </style>
+
+    <smtp-settings id="smtp_settings" settings="{{settings}}"></smtp-settings>
+
+    <div class="header">SMTP Settings</div>
+    <paper-input label="Host" class="settings-input" value="{{settings.host}}" on-change="{{send}}" floatingLabel></paper-input>
+    <paper-input label="Port" class="settings-input" value="{{settings.port}}" on-change="{{send}}" floatingLabel></paper-input>
+
+    <div class="toggle-input" center horizontal layout>
+      <div flex>Authentication</div>
+      <paper-toggle-button on-change="{{authenticationChanged}}" checked></paper-toggle-button>
+    </div>
+
+    <paper-input label="Username" id="username" class="settings-input" value="{{settings.user}}" on-change="{{send}}" floatingLabel></paper-input>
+    <paper-input label="Password" id="password" class="settings-input" value="{{settings.pwd}}" on-change="{{send}}" floatingLabel></paper-input>
+
+    <content></content>
+  </template>
+  <script>
+  Polymer('junkie-smtp-settings', {
+
+    attached: function() {
+      this.settings = {};
+      this.$.smtp_settings.get();
+    },
+
+    authenticationChanged: function(event, detail, sender) {
+      var disabled = true;
+      if (sender.checked) {
+        disabled = false;
+      }
+
+      this.$.username.disabled = disabled;
+      this.$.password.disabled = disabled;
+    },
+
+    send: function(event, detail, sender) {
+      console.log("PUTTING!");
+      this.$.smtp_settings.put();
+    }
+
+  });
+  </script>
+</polymer-element>
