@@ -2,9 +2,10 @@
 <link rel="import" href="../components/paper-input/paper-input.html">
 <link rel="import" href="../components/paper-toggle-button/paper-toggle-button.html">
 
-<link rel="import" href="../junkie-service/smtp-settings.html">
+<link rel="import" href="../junkie-service/set-config.html">
+<link rel="import" href="../junkie-service/get-config.html">
 
-<polymer-element name="junkie-smtp-settings" attributes="observer">
+<polymer-element name="junkie-smtp" attributes="observer">
   <template>
     <style>
     :host {
@@ -22,28 +23,29 @@
     }
     </style>
 
-    <smtp-settings id="smtp_settings" settings="{{settings}}"></smtp-settings>
+    <get-config id="get_smtp_config" config="{{config}}" path="smtp"></get-config>
+    <set-config id="set_smtp_config" config="{{config.smtp}}" path="smtp"></set-config>
 
     <div class="header">SMTP Settings</div>
-    <paper-input label="Host" class="settings-input" value="{{settings.host}}" on-change="{{send}}" floatingLabel></paper-input>
-    <paper-input label="Port" class="settings-input" value="{{settings.port}}" on-change="{{send}}" floatingLabel></paper-input>
+    <paper-input label="Host" class="settings-input" value="{{config.smtp.host}}" on-change="{{send}}" floatingLabel></paper-input>
+    <paper-input label="Port" class="settings-input" value="{{config.smtp.port}}" on-change="{{send}}" floatingLabel></paper-input>
 
     <div class="toggle-input" center horizontal layout>
       <div flex>Authentication</div>
       <paper-toggle-button on-change="{{authenticationChanged}}" checked></paper-toggle-button>
     </div>
 
-    <paper-input label="Username" id="username" class="settings-input" value="{{settings.user}}" on-change="{{send}}" floatingLabel></paper-input>
-    <paper-input label="Password" id="password" class="settings-input" value="{{settings.pwd}}" on-change="{{send}}" floatingLabel></paper-input>
+    <paper-input label="Username" id="username" class="settings-input" value="{{config.smtp.user}}" on-change="{{send}}" floatingLabel></paper-input>
+    <paper-input label="Password" id="password" class="settings-input" value="{{config.smtp.pwd}}" on-change="{{send}}" floatingLabel></paper-input>
 
     <content></content>
   </template>
   <script>
-  Polymer('junkie-smtp-settings', {
+  Polymer('junkie-smtp', {
 
     attached: function() {
-      this.settings = {};
-      this.$.smtp_settings.get();
+      this.config = {};
+      this.$.get_smtp_config.go();
     },
 
     authenticationChanged: function(event, detail, sender) {
@@ -57,8 +59,7 @@
     },
 
     send: function(event, detail, sender) {
-      console.log("PUTTING!");
-      this.$.smtp_settings.put();
+      this.$.set_smtp_config.go();
     }
 
   });
