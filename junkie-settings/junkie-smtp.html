@@ -27,16 +27,25 @@
     <set-config id="set_smtp_config" config="{{config.smtp}}" path="smtp"></set-config>
 
     <div class="header">SMTP Settings</div>
-    <paper-input label="Host" class="settings-input" value="{{config.smtp.host}}" on-change="{{send}}" floatingLabel></paper-input>
-    <paper-input label="Port" class="settings-input" value="{{config.smtp.port}}" on-change="{{send}}" floatingLabel></paper-input>
+
+    <paper-input label="Host" class="settings-input" value="{{config.smtp.host}}"
+                 on-change="{{send}}" floatingLabel></paper-input>
+
+    <paper-input label="Port" class="settings-input" value="{{config.smtp.port}}"
+                 on-change="{{send}}" floatingLabel></paper-input>
 
     <div class="toggle-input" center horizontal layout>
       <div flex>Authentication</div>
-      <paper-toggle-button on-change="{{authenticationChanged}}" checked></paper-toggle-button>
+      <paper-toggle-button on-change="{{send}}" checked="{{config.smtp.auth}}"></paper-toggle-button>
     </div>
 
-    <paper-input label="Username" id="username" class="settings-input" value="{{config.smtp.user}}" on-change="{{send}}" floatingLabel></paper-input>
-    <paper-input label="Password" id="password" class="settings-input" value="{{config.smtp.pwd}}" on-change="{{send}}" floatingLabel></paper-input>
+    <paper-input label="Username" id="username" class="settings-input"
+                 value="{{config.smtp.user}}" disabled="{{!config.smtp.auth}}"
+                 on-change="{{send}}" floatingLabel></paper-input>
+
+    <paper-input label="Password" id="password" class="settings-input"
+                 value="{{config.smtp.pwd}}" disabled="{{!config.smtp.auth}}"
+                 on-change="{{send}}" floatingLabel></paper-input>
 
     <content></content>
   </template>
@@ -46,16 +55,6 @@
     attached: function() {
       this.config = {};
       this.$.get_smtp_config.go();
-    },
-
-    authenticationChanged: function(event, detail, sender) {
-      var disabled = true;
-      if (sender.checked) {
-        disabled = false;
-      }
-
-      this.$.username.disabled = disabled;
-      this.$.password.disabled = disabled;
     },
 
     send: function(event, detail, sender) {
