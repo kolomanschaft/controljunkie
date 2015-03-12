@@ -21,6 +21,7 @@
   <link rel="import" href="components/core-toolbar/core-toolbar.html">
   <link rel="import" href="components/paper-tabs/paper-tabs.html">
   <link rel="import" href="components/paper-item/paper-item.html">
+  <link rel="import" href="components/paper-icon-button/paper-icon-button.html">
 
   <link rel="import" href="observer-list/observer-list.html">
   <link rel="import" href="junkie-settings/junkie-settings.html">
@@ -71,7 +72,8 @@
                   <span>ControlJunkie</span>
               </core-toolbar>
 
-              <core-menu valueattr="hash" selected="{{route}}" on-core-select="{{menuItemSelected}}">
+              <core-menu valueattr="hash" selected="{{route}}"
+                         on-core-select="{{menuItemSelected}}" selectedModel="{{selectedPage}}">
                   <template repeat="{{menuitem in menu}}">
                       <paper-item hash="{{menuitem.hash}}">
                           <core-icon class="menu-icon" icon="{{menuitem.icon}}"></core-icon>
@@ -82,7 +84,10 @@
 
           </nav>
 
-          <core-toolbar tool flex>Observers</core-toolbar>
+          <core-toolbar tool flex>
+              <div flex>{{selectedPage.menuitem.name}}</div>
+              <paper-icon-button icon="add"></paper-icon-button>
+          </core-toolbar>
 
             <core-animated-pages selected="{{route}}" valueattr="hash" transitions="slide-from-right">
                 <section hash="observers" layout vertical center>
@@ -106,9 +111,11 @@
     {name: "Observers", icon: "visibility", hash: "observers"},
     {name: "Settings", icon: "settings", hash: "settings"}
   ]
+
   template.addEventListener('template-bound', function(e) {
     this.route = this.route || DEFAULT_ROUTE;
   });
+
   template.menuItemSelected = function(e, detail, sender) {
     if (detail.isSelected) {
       var scaffold = document.querySelector('core-scaffold');
